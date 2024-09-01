@@ -1,6 +1,8 @@
 
 # ビルドとProMicroへのflash手順
 
+## Windows編
+
 (*) QMK_MSYSのセットアップについては省略
 
 1. keyballのリポジトリクローン
@@ -21,15 +23,14 @@ $ qmk flash -kb keyball/keyball44 -km my_keymap
 
 # やったことメモ
 
-1. -AutoMouseLayerを1から2に変更-
-   →AutoMouseLayerを1に戻してRemapでLayer1と2のキーマップをごっそり入れ替えた
-2. トラックボール加速機能実装
+1. トラックボール加速機能実装
    以下を参考にした。
    https://x.com/mass_0X00/status/1824373363604853180
-3. マウスキーを押すまでAutoMouseLayerに留まる
+2. マウスキーを押すまでAutoMouseLayerに留まる
    以下を参考にした。
    https://github.com/negokaz/keyball/pull/2
-
+3. PERMISSIVE_HOLDを有効にした
+   押下時間に関係なく、押下中に他キー押下でHOLD判定になる。
 
 # 参考
 
