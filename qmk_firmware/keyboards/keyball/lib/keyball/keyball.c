@@ -48,6 +48,7 @@ keyball_t keyball = {
 
     .cpi_value   = 0,
     .cpi_changed = false,
+    .cpi_accelerate = true,
 
     .scroll_mode = false,
     .scroll_div  = 0,
@@ -271,14 +272,12 @@ static float adjust_acceleration(int16_t movement_size) {
 // --------------------------------------------------
 static void adjust_mouse_speed(keyball_motion_t *m) {
     int16_t movement_size = abs(m->x) + abs(m->y);
-    float speed_multiplier = adjust_acceleration(movement_size);
+    float speed_multiplier = 1.0f;
+    if ( keyball_get_accelerate() ) {
+        speed_multiplier = adjust_acceleration(movement_size);
+    }
     m->x = clip2int8((int16_t)(m->x * speed_multiplier));
     m->y = clip2int8((int16_t)(m->y * speed_multiplier));
-
-    // float speed_multiplier_x = adjust_acceleration(m->x);
-    // float speed_multiplier_y = adjust_acceleration(m->y);
-    // m->x = clip2int8((int16_t)(m->x * speed_multiplier_x));
-    // m->y = clip2int8((int16_t)(m->y * speed_multiplier_y));
 }
 
 static void motion_to_mouse(keyball_motion_t *m, report_mouse_t *r, bool is_left, bool as_scroll) {
@@ -600,6 +599,14 @@ void keyball_oled_render_layerinfo(void) {
 //////////////////////////////////////////////////////////////////////////////
 // Public API functions
 
+bool keyball_get_accelerate(void) {
+    return keyball.cpi_accelerate;
+}
+
+void keyball_set_accelerate(void) {
+    keyball.cpi_accelerate = !keyball.cpi_accelerate;
+}
+
 bool keyball_get_scroll_mode(void) {
     return keyball.scroll_mode;
 }
@@ -812,10 +819,11 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 add_cpi(-1);
                 break;
             case CPI_I1K:
-                add_cpi(10);
+                // add_cpi(10);
+                keyball_set_accelerate();
                 break;
             case CPI_D1K:
-                add_cpi(-10);
+                // add_cpi(-10);
                 break;
 
             case SCRL_TO:
