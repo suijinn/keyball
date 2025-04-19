@@ -161,6 +161,7 @@ typedef struct {
 
     uint8_t cpi_value;
     bool    cpi_changed;
+    bool    cpi_accelerate;
 
     bool     scroll_mode;
     uint32_t scroll_mode_changed;
@@ -227,6 +228,10 @@ void keyball_oled_render_keyinfo(void);
 /// OLED.  It shows layer mask with number (1~f) for active layers and '_' for
 /// inactive layers.
 void keyball_oled_render_layerinfo(void);
+
+///
+bool keyball_get_accelerate(void);
+void keyball_set_accelerate(void);
 
 /// keyball_get_scroll_mode gets current scroll mode.
 bool keyball_get_scroll_mode(void);
